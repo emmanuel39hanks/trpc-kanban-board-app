@@ -2,6 +2,8 @@
 
 This is a simple Kanban board application built with Next.js, tRPC, Prisma, and React Beautiful DnD. It allows users to create boards, add cards to columns, and drag and drop cards between columns.
 
+Demo: [View Kanban Board App](https://trpc-kanban-board-app-jfvc.vercel.app/)
+
 ## Features
 
 - Create and delete boards
