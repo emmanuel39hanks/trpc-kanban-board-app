@@ -34,17 +34,22 @@ This is a simple Kanban board application built with Next.js, tRPC, Prisma, and 
    DATABASE_URL="postgresql://username:password@localhost:5432/kanban_db"
    ```
 
-4. Set up the database:
+4. Generate Prisma client:
+   ```
+   npx prisma generate
+   ```
+
+5. Set up the database:
    ```
    npx prisma db push
    ```
 
-5. Run the development server:
+6. Run the development server:
    ```
    npm run dev
    ```
 
-6. Open [http://localhost:3000](http://localhost:3000) in your browser to see the application.
+7. Open [http://localhost:3000](http://localhost:3000) in your browser to see the application.
 
 ## Scripts
 
