@@ -9,8 +9,7 @@ Demo: [View Kanban Board App](https://trpc-kanban-board-app-jfvc.vercel.app/)
 - Create and delete boards
 - Add cards to columns
 - Drag and drop cards between columns
-- Responsive design
-
+  
 ## Prerequisites
 
 - Node.js (v14 or later)
