@@ -29,9 +29,9 @@ export default function BoardPage() {
     id: id as string,
   });
   const [boardState, setBoardState] = useState<Board | null>(null);
-  const addCardMutation = trpc.board.addCard.useMutation();
-  const updateCardOrderMutation = trpc.board.updateCardOrder.useMutation();
-  const deleteCardMutation = trpc.board.deleteCard.useMutation();
+  const addCardMutation = trpc.card.create.useMutation();
+  const updateCardOrderMutation = trpc.card.updateCardOrder.useMutation();
+  const deleteCardMutation = trpc.card.deleteCard.useMutation();
 
   const [newCardTitle, setNewCardTitle] = useState("");
   const [newCardDescription, setNewCardDescription] = useState("");
@@ -71,13 +71,13 @@ export default function BoardPage() {
           })),
         };
       });
-      
+
       refetch();
     } catch (error) {
       console.error("Failed to delete card:", error);
     }
   };
-  
+
   const onDragEnd = async (result: DropResult) => {
     if (!result.destination) return;
     const { source, destination } = result;

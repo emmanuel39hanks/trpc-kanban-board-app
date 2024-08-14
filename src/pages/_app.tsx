@@ -1,9 +1,16 @@
-import '../styles/globals.css';
-import { AppType } from 'next/app';
-import { trpc } from '../utils/trpc';
+import type { AppProps } from "next/app";
+import { trpc } from "../utils/trpc";
+import { UserProvider } from "@auth0/nextjs-auth0/client";
+import Header from "../components/layout/Header";
+import "../styles/globals.css";
 
-const MyApp: AppType = ({ Component, pageProps }) => {
-  return <Component {...pageProps} />;
-};
+function MyApp({ Component, pageProps }: AppProps) {
+  return (
+    <UserProvider>
+      <Header />
+      <Component {...pageProps} />
+    </UserProvider>
+  );
+}
 
 export default trpc.withTRPC(MyApp);

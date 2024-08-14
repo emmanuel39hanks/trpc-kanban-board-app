@@ -10,11 +10,56 @@ Demo: [View Kanban Board App](https://trpc-kanban-board-app-jfvc.vercel.app/)
 - Add cards to columns
 - Drag and drop cards between columns
   
+## Tech Stack
+- Node.js
+- PostgreSQL
+- Prisma
+- tRPC
+- Auth0
+- Typescript
+
 ## Prerequisites
 
 - Node.js (v14 or later)
 - npm or yarn
 - PostgreSQL database
+
+## Auth0 Integration
+
+This application uses Auth0 for authentication. Follow these steps to set up Auth0:
+
+1. Sign up for an account at [Auth0](https://auth0.com/).
+
+2. Create a new application in the Auth0 dashboard.
+
+3. Set the application type to "Regular Web Application".
+
+4. In your Auth0 application settings, add the following URLs:
+   - Allowed Callback URLs: `http://localhost:3000/api/auth/callback`
+   - Allowed Logout URLs: `http://localhost:3000`
+   - Allowed Web Origins: `http://localhost:3000`
+
+5. Create a `.env.local` file in the root directory and add the following environment variables:
+
+   ```
+   AUTH0_SECRET='use command `openssl rand -hex 32` to generate a 32 bytes value'
+   AUTH0_BASE_URL='http://localhost:3000'
+   AUTH0_ISSUER_BASE_URL='https://{YOUR_AUTH0_DOMAIN}'
+   AUTH0_CLIENT_ID='{YOUR_AUTH0_CLIENT_ID}'
+   AUTH0_CLIENT_SECRET='{YOUR_AUTH0_CLIENT_SECRET}'
+   ```
+
+   Replace `{YOUR_AUTH0_DOMAIN}`, `{YOUR_AUTH0_CLIENT_ID}`, and `{YOUR_AUTH0_CLIENT_SECRET}` with your actual Auth0 application values.
+
+6. Generate a secure random value for `AUTH0_SECRET` using the command:
+   ```
+   openssl rand -hex 32
+   ```
+
+7. Install the Auth0 Next.js SDK:
+   ```
+   npm install @auth0/nextjs-auth0
+   ```
 
 ## Getting Started
 
@@ -65,15 +110,15 @@ Demo: [View Kanban Board App](https://trpc-kanban-board-app-jfvc.vercel.app/)
   - [ ] Improve error handling for API calls
   - [ ] Address any console warnings or errors
 
-- [ ] Add homepage:
-  - [ ] Create a landing page with app information
-  - [ ] Implement user sign-up functionality
-  - [ ] Implement user login functionality
-  - [ ] Add user authentication flow
+- [x] Add homepage:
+  - [x] Create a landing page with app information
+  - [x] Implement user sign-up functionality
+  - [x] Implement user login functionality
+  - [x] Add user authentication flow
 
-- [ ] Add authentication:
-  - [ ] Implement user registration and login
-  - [ ] Secure routes and API endpoints
+- [x] Add authentication:
+  - [x] Implement user registration and login
+  - [x] Secure routes and API endpoints
 
 - [ ] Add custom columns:
   - [ ] Allow users to create, edit, and delete columns
