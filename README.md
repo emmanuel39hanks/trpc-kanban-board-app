@@ -135,10 +135,6 @@ This application uses Auth0 for authentication. Follow these steps to set up Aut
   - [ ] Add visual feedback during drag operations
   - [ ] Implement smooth animations for card movements
 
-- [ ] Improve responsiveness:
-  - [ ] Optimize layout for mobile devices
-  - [ ] Implement a responsive design for all screen sizes
-
 - [ ] Add AI voice task creation:
   - [ ] Integrate OpenAI's Whisper for speech-to-text conversion
   - [ ] Allow users to add tasks using voice commands
@@ -147,14 +143,19 @@ This application uses Auth0 for authentication. Follow these steps to set up Aut
   - [ ] Integrate lofi music player
   - [ ] Allow users to toggle background music on/off
 
-- [ ] Refactor code:
-  - [ ] Improve code organization and modularity
-  - [ ] Implement best practices and design patterns
-
 - [ ] Add timed tasks:
   - [ ] Implement a Pomodoro-style timer for tasks
   - [ ] Allow users to set custom time limits for tasks
   - [ ] Add notifications for task time completion
+
+- [ ] Improve responsiveness and design:
+  - [ ] Optimize layout for mobile devices
+  - [ ] Implement a responsive design for all screen sizes
+
+- [ ] Refactor code:
+  - [ ] Improve code organization and modularity
+  - [ ] Implement best practices and design patterns
+
 
 ## Contributing
 
