@@ -66,6 +66,12 @@ Demo: [View Kanban Board App](https://trpc-kanban-board-app-jfvc.vercel.app/)
   - [ ] Improve error handling for API calls
   - [ ] Address any console warnings or errors
 
+- [ ] Add homepage:
+  - [ ] Create a landing page with app information
+  - [ ] Implement user sign-up functionality
+  - [ ] Implement user login functionality
+  - [ ] Add user authentication flow
+
 - [ ] Add authentication:
   - [ ] Implement user registration and login
   - [ ] Secure routes and API endpoints
@@ -84,6 +90,27 @@ Demo: [View Kanban Board App](https://trpc-kanban-board-app-jfvc.vercel.app/)
 - [ ] Enhance drag and drop functionality:
   - [ ] Add visual feedback during drag operations
   - [ ] Implement smooth animations for card movements
+
+- [ ] Improve responsiveness:
+  - [ ] Optimize layout for mobile devices
+  - [ ] Implement a responsive design for all screen sizes
+
+- [ ] Add AI voice task creation:
+  - [ ] Integrate OpenAI's Whisper for speech-to-text conversion
+  - [ ] Allow users to add tasks using voice commands
+
+- [ ] Add background music feature:
+  - [ ] Integrate lofi music player
+  - [ ] Allow users to toggle background music on/off
+
+- [ ] Refactor code:
+  - [ ] Improve code organization and modularity
+  - [ ] Implement best practices and design patterns
+
+- [ ] Add timed tasks:
+  - [ ] Implement a Pomodoro-style timer for tasks
+  - [ ] Allow users to set custom time limits for tasks
+  - [ ] Add notifications for task time completion
 
 ## Contributing
 
