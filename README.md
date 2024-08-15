@@ -155,9 +155,9 @@ This application uses Jamendo for the lofi music player. Follow these steps to s
   - [ ] Add visual feedback during drag operations
   - [ ] Implement smooth animations for card movements
 
-- [] Add AI voice task creation:
-  - [] Integrate OpenAI's Whisper for speech-to-text conversion
-  - [] Allow users to add tasks using voice commands
+- [ ] Add AI voice task creation:
+  - [ ] Integrate OpenAI's Whisper for speech-to-text conversion
+  - [ ] Allow users to add tasks using voice commands
 
 - [x] Add background music feature:
   - [x] Integrate lofi music player
