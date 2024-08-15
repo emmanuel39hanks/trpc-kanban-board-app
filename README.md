@@ -144,8 +144,8 @@ This application uses Jamendo for the lofi music player. Follow these steps to s
   - [ ] Allow users to create, edit, and delete columns
   - [ ] Implement column reordering
 
-- [ ] Add confirmation modals:
-  - [ ] Implement confirmation dialogs for delete actions (boards, columns, cards)
+- [x] Add confirmation modals:
+  - [x] Implement confirmation dialogs for delete actions (boards, columns, cards)
 
 - [ ] Improve loading states:
   - [ ] Add skeleton loaders for boards and cards

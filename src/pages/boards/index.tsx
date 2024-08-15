@@ -21,6 +21,7 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import { Plus, Trash2 } from "lucide-react";
+import { useToast } from "@/components/ui/use-toast";
 
 export default function Home() {
   const { data: boards, isLoading, refetch } = trpc.board.getAll.useQuery();
@@ -28,17 +29,37 @@ export default function Home() {
   const deleteBoardMutation = trpc.board.deleteBoard.useMutation();
   const [newBoardName, setNewBoardName] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [boardToDelete, setBoardToDelete] = useState<string | null>(null);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const { toast } = useToast();
 
   const handleCreateBoard = async () => {
     await createBoardMutation.mutateAsync({ name: newBoardName });
     setNewBoardName("");
     setIsDialogOpen(false);
     refetch();
+    toast({
+      title: "Board created",
+      description: "Your new board has been created successfully.",
+    });
   };
 
-  const handleDeleteBoard = async (id: string) => {
-    await deleteBoardMutation.mutateAsync({ id });
-    refetch();
+  const handleDeleteBoard = (id: string) => {
+    setBoardToDelete(id);
+    setIsDeleteDialogOpen(true);
+  };
+
+  const confirmDeleteBoard = async () => {
+    if (boardToDelete) {
+      await deleteBoardMutation.mutateAsync({ id: boardToDelete });
+      refetch();
+      setIsDeleteDialogOpen(false);
+      setBoardToDelete(null);
+      toast({
+        title: "Board deleted",
+        description: "The board has been deleted successfully.",
+      });
+    }
   };
 
   return (
@@ -90,7 +111,10 @@ export default function Home() {
           <p className="text-xl mt-14">
             Hmm... Seems we have no boards. Let's create some!
           </p>
-          <Button onClick={() => setIsDialogOpen(true)} className="rounded-md mt-4">
+          <Button
+            onClick={() => setIsDialogOpen(true)}
+            className="rounded-md mt-4"
+          >
             Create Your First Board
           </Button>
         </div>
@@ -114,6 +138,28 @@ export default function Home() {
           <DialogFooter>
             <Button onClick={handleCreateBoard} className="rounded-md">
               Create Board
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+      <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Delete Board</DialogTitle>
+            <DialogDescription>
+              Are you sure you want to delete this board? This action cannot be
+              undone.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setIsDeleteDialogOpen(false)}
+            >
+              Cancel
+            </Button>
+            <Button variant="destructive" onClick={confirmDeleteBoard}>
+              Delete
             </Button>
           </DialogFooter>
         </DialogContent>

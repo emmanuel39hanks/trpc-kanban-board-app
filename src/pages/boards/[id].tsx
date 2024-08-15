@@ -17,6 +17,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
+import { useToast } from "@/components/ui/use-toast";
 
 export default function BoardPage() {
   const router = useRouter();
@@ -32,11 +33,13 @@ export default function BoardPage() {
   const addCardMutation = trpc.card.create.useMutation();
   const updateCardOrderMutation = trpc.card.updateCardOrder.useMutation();
   const deleteCardMutation = trpc.card.deleteCard.useMutation();
-
   const [newCardTitle, setNewCardTitle] = useState("");
   const [newCardDescription, setNewCardDescription] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [activeColumn, setActiveColumn] = useState<string | null>(null);
+  const [cardToDelete, setCardToDelete] = useState<string | null>(null);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const { toast } = useToast();
 
   useEffect(() => {
     if (board) {
@@ -55,29 +58,50 @@ export default function BoardPage() {
       setNewCardDescription("");
       setIsDialogOpen(false);
       refetch();
-    }
-  };
-
-  const handleDeleteCard = async (cardId: string) => {
-    try {
-      await deleteCardMutation.mutateAsync({ cardId });
-      setBoardState((prevState) => {
-        if (!prevState) return null;
-        return {
-          ...prevState,
-          columns: prevState.columns.map((column) => ({
-            ...column,
-            cards: column.cards.filter((card) => card.id !== cardId),
-          })),
-        };
+      toast({
+        title: "Card added",
+        description: "Your new card has been added successfully.",
       });
-
-      refetch();
-    } catch (error) {
-      console.error("Failed to delete card:", error);
     }
   };
 
+  const handleDeleteCard = (cardId: string) => {
+    setCardToDelete(cardId);
+    setIsDeleteDialogOpen(true);
+  };
+
+  const confirmDeleteCard = async () => {
+    if (cardToDelete) {
+      try {
+        await deleteCardMutation.mutateAsync({ cardId: cardToDelete });
+        setBoardState((prevState) => {
+          if (!prevState) return null;
+          return {
+            ...prevState,
+            columns: prevState.columns.map((column) => ({
+              ...column,
+              cards: column.cards.filter((card) => card.id !== cardToDelete),
+            })),
+          };
+        });
+
+        refetch();
+        setIsDeleteDialogOpen(false);
+        setCardToDelete(null);
+        toast({
+          title: "Card deleted",
+          description: "The card has been deleted successfully.",
+        });
+      } catch (error) {
+        console.error("Failed to delete card:", error);
+        toast({
+          title: "Error",
+          description: "Failed to delete the card. Please try again.",
+          variant: "destructive",
+        });
+      }
+    }
+  };
   const onDragEnd = async (result: DropResult) => {
     if (!result.destination) return;
     const { source, destination } = result;
@@ -160,6 +184,28 @@ export default function BoardPage() {
           <DialogFooter>
             <Button onClick={handleAddCard} className="rounded-md">
               Add Card
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+      <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Delete Card</DialogTitle>
+            <DialogDescription>
+              Are you sure you want to delete this card? This action cannot be
+              undone.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setIsDeleteDialogOpen(false)}
+            >
+              Cancel
+            </Button>
+            <Button variant="destructive" onClick={confirmDeleteCard}>
+              Delete
             </Button>
           </DialogFooter>
         </DialogContent>
