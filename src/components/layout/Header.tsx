@@ -19,6 +19,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { trpc } from "../../utils/trpc";
 import { useRouter } from "next/router";
+import { AudioPlayer } from "../audio/AudioPlayer";
 
 export default function Header() {
   const { user, isLoading } = useUser();
@@ -43,6 +44,7 @@ export default function Header() {
         <div className="text-2xl font-bold text-gray-600 mr-6">LemoBoards</div>
       </div>
       <nav className="flex items-center">
+        {user && <AudioPlayer />}
         {user && isOnBoardsPage && (
           <Button
             variant="outline"

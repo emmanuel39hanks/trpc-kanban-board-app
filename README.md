@@ -39,7 +39,7 @@ This application uses Auth0 for authentication. Follow these steps to set up Aut
    - Allowed Logout URLs: `http://localhost:3000`
    - Allowed Web Origins: `http://localhost:3000`
 
-5. Create a `.env.local` file in the root directory and add the following environment variables:
+5. Create a `.env` file in the root directory and add the following environment variables:
 
    ```
    AUTH0_SECRET='use command `openssl rand -hex 32` to generate a 32 bytes value'
@@ -60,6 +60,26 @@ This application uses Auth0 for authentication. Follow these steps to set up Aut
    ```
    npm install @auth0/nextjs-auth0
    ```
+
+## Jamendo Integration
+
+This application uses Jamendo for the lofi music player. Follow these steps to set up Jamendo:
+
+1. Sign up for a developer account at [Jamendo](https://developer.jamendo.com/).
+
+2. Create a new application in the Jamendo developer dashboard.
+
+3. Obtain your Client ID from the application settings.
+
+4. Add the following environment variable to your `.env` file:
+
+   ```
+   JAMENDO_CLIENT_ID='{YOUR_JAMENDO_CLIENT_ID}'
+   ```
+
+   Replace `{YOUR_JAMENDO_CLIENT_ID}` with your actual Jamendo Client ID.
+
+5. The application is now set up to use Jamendo's API for fetching lofi tracks.
 
 ## Getting Started
 
@@ -135,9 +155,9 @@ This application uses Auth0 for authentication. Follow these steps to set up Aut
   - [ ] Add visual feedback during drag operations
   - [ ] Implement smooth animations for card movements
 
-- [ ] Add AI voice task creation:
-  - [ ] Integrate OpenAI's Whisper for speech-to-text conversion
-  - [ ] Allow users to add tasks using voice commands
+- [x] Add AI voice task creation:
+  - [x] Integrate OpenAI's Whisper for speech-to-text conversion
+  - [x] Allow users to add tasks using voice commands
 
 - [ ] Add background music feature:
   - [ ] Integrate lofi music player
