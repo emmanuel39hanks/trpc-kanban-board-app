@@ -85,7 +85,7 @@ This application uses Jamendo for the lofi music player. Follow these steps to s
 
 1. Clone the repository:
    ```
-   git clone https://github.com/yourusername/kanban-board-app.git
+   git clone https://github.com/emmanuel39hanks/kanban-board-app.git
    cd kanban-board-app
    ```
 
