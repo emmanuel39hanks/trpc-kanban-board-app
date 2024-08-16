@@ -101,16 +101,16 @@ export function AudioPlayer() {
   if (isLoading) return <div>Loading...</div>;
 
   return (
-    <div className="flex items-center space-x-4 bg-white p-2 rounded-lg shadow-sm outline outline-1 outline-gray-200 mr-4 w-100">
+    <div className="flex items-center space-x-2 bg-white p-1 rounded-lg shadow-sm outline outline-1 outline-gray-200 mr-2 w-100">
       {currentTrack && (
         <img
           src={currentTrack.image}
           alt={currentTrack.name}
-          className="w-12 h-12 rounded-md object-cover flex-shrink-0"
+          className="w-10 h-10 rounded-md object-cover flex-shrink-0"
         />
       )}
-      <div className="flex flex-col flex-grow min-w-0 max-w-[210px]">
-        <div className="text-sm font-medium truncate">
+      <div className="flex flex-col flex-grow min-w-0 max-w-[170px]">
+        <div className="text-xs font-medium truncate">
           {currentTrack ? currentTrack.name : "No track selected"}
         </div>
         <div className="text-xs text-gray-500 truncate">
@@ -118,14 +118,14 @@ export function AudioPlayer() {
         </div>
         <Progress value={progress} className="w-full h-1 mt-1" />
       </div>
-      <div className="flex items-center space-x-2">
+      <div className="flex items-center space-x-1">
         <Button variant="ghost" size="icon" onClick={previousTrack}>
           <SkipBack className="h-4 w-4" />
         </Button>
         <Button variant="ghost" size="icon" onClick={togglePlay}>
           {isAudioLoading ? (
             <svg
-              className="animate-spin h-5 w-5"
+              className="animate-spin h-4 w-4"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
@@ -145,9 +145,9 @@ export function AudioPlayer() {
               ></path>
             </svg>
           ) : isPlaying ? (
-            <Pause className="h-5 w-5" />
+            <Pause className="h-4 w-4" />
           ) : (
-            <Play className="h-5 w-5" />
+            <Play className="h-4 w-4" />
           )}
         </Button>
         <Button variant="ghost" size="icon" onClick={nextTrack}>

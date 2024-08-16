@@ -1,6 +1,6 @@
 # Kanban Board App
 
-This is a simple Kanban board application built with Next.js, tRPC, Prisma, and React Beautiful DnD. It allows users to create boards, add cards to columns, and drag and drop cards between columns.
+This is a Kanban board application built with Next.js, tRPC, Prisma, and React Beautiful DnD. It allows users to create boards, add cards to columns, and drag and drop cards between columns.
 
 Demo: [View Kanban Board App](https://trpc-kanban-board-app-jfvc.vercel.app/)
 
@@ -163,10 +163,10 @@ This application uses Jamendo for the lofi music player. Follow these steps to s
   - [x] Integrate lofi music player
   - [x] Allow users to toggle background music on/off
 
-- [ ] Add timed tasks:
-  - [ ] Implement a Pomodoro-style timer for tasks
-  - [ ] Allow users to set custom time limits for tasks
-  - [ ] Add notifications for task time completion
+- [x] Add timed tasks:
+  - [x] Implement a Pomodoro-style timer for tasks
+  - [x] Allow users to set custom time limits for tasks
+  - [x] Add notifications/toasts for task time completion
 
 - [ ] Improve responsiveness and design:
   - [ ] Optimize layout for mobile devices

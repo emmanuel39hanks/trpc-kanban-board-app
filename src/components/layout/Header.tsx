@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { LogIn, User, LogOut, Settings, HelpCircle, Plus } from "lucide-react";
 import { useUser } from "@auth0/nextjs-auth0/client";
@@ -20,6 +21,8 @@ import { Input } from "@/components/ui/input";
 import { trpc } from "../../utils/trpc";
 import { useRouter } from "next/router";
 import { AudioPlayer } from "../audio/AudioPlayer";
+import logo from "../../../assets/logo.png";
+import { TimedTaskDrawer } from "../timed-tasks/TimedTaskDrawer";
 
 export default function Header() {
   const { user, isLoading } = useUser();
@@ -41,10 +44,13 @@ export default function Header() {
   return (
     <header className="flex justify-between items-center py-4 px-6 bg-white shadow-sm">
       <div className="flex items-center">
-        <div className="text-2xl font-bold text-gray-600 mr-6">LemoBoards</div>
+        <Image src={logo} alt="LemoBoards Logo" width={200} height={40} />
       </div>
       <nav className="flex items-center">
         {user && <AudioPlayer />}
+        {user && (
+            <TimedTaskDrawer /> 
+        )}
         {user && isOnBoardsPage && (
           <Button
             variant="outline"

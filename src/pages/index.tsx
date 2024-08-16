@@ -1,9 +1,10 @@
 import Footer from "../components/layout/Footer";
 import { Button } from "../components/ui/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+
 export default function Home() {
-  const [isSignupModalOpen, setIsSignupModalOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -21,7 +22,6 @@ export default function Home() {
               <Button
                 size="lg"
                 className="bg-white text-blue-600 hover:bg-blue-100"
-                onClick={() => setIsSignupModalOpen(true)}
               >
                 Get started for free
               </Button>
