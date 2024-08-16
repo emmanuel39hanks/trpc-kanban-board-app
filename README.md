@@ -172,11 +172,6 @@ This application uses Jamendo for the lofi music player. Follow these steps to s
   - [ ] Optimize layout for mobile devices
   - [ ] Implement a responsive design for all screen sizes
 
-- [ ] Refactor code:
-  - [ ] Improve code organization and modularity
-  - [ ] Implement best practices and design patterns
-
-
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
