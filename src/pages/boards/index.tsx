@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/card";
 import { Plus, Trash2 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function Home() {
   const { data: boards, isLoading, refetch } = trpc.board.getAll.useQuery();
@@ -65,8 +66,10 @@ export default function Home() {
   return (
     <div className="container mx-auto p-4">
       {isLoading ? (
-        <div className="flex justify-center items-center h-64">
-          <p className="text-xl">Loading...</p>
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {[...Array(8)].map((_, index) => (
+            <Skeleton key={index} className="h-40 w-full" />
+          ))}
         </div>
       ) : boards && boards.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">

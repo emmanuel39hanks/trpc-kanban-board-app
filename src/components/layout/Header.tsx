@@ -23,6 +23,7 @@ import { useRouter } from "next/router";
 import { AudioPlayer } from "../audio/AudioPlayer";
 import logo from "../../../assets/logo.png";
 import { TimedTaskDrawer } from "../timed-tasks/TimedTaskDrawer";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function Header() {
   const { user, isLoading } = useUser();
@@ -48,9 +49,7 @@ export default function Header() {
       </div>
       <nav className="flex items-center">
         {user && <AudioPlayer />}
-        {user && (
-            <TimedTaskDrawer /> 
-        )}
+        {user && <TimedTaskDrawer />}
         {user && isOnBoardsPage && (
           <Button
             variant="outline"
@@ -66,7 +65,7 @@ export default function Header() {
           </Button>
         )}
         {isLoading ? (
-          <div>Loading...</div>
+          <Skeleton className="h-10 w-10 rounded-full" />
         ) : user ? (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -93,12 +92,14 @@ export default function Header() {
           </DropdownMenu>
         ) : (
           <>
-            <Button variant="outline" className="mr-2">
-              <Link href="/api/auth/login">Log in</Link>
-            </Button>
-            <Button>
-              <Link href="/api/auth/login">Sign Up</Link>
-            </Button>
+            <Link href="/api/auth/login">
+              <Button variant="outline" className="mr-2">
+                Log in
+              </Button>
+            </Link>
+            <Link href="/api/auth/login">
+              <Button>Sign Up</Button>
+            </Link>
           </>
         )}
       </nav>

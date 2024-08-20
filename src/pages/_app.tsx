@@ -16,7 +16,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   if (isMobileDevice) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-500 to-purple-600 text-white p-4">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-gray-900 to-gray-800 text-white p-4">
         <div className="text-center">
           <h1 className="text-3xl font-bold mb-4">Mobile Access Unavailable</h1>
           <p className="text-xl mb-8">

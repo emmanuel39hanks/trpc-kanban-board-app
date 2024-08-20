@@ -4,17 +4,18 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { TimedTask } from "@prisma/client";
 import { Check, Trash2 } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface TimedTaskItemProps {
-  task: TimedTask;
+  task: TimedTask & { timeLeft: number };
 }
 
 export function TimedTaskItem({ task }: TimedTaskItemProps) {
-  const [timeLeft, setTimeLeft] = useState(task.duration * 60);
+  const [timeLeft, setTimeLeft] = useState(task.timeLeft);
   const { toast } = useToast();
   const utils = trpc.useUtils();
 
-  const completeTask = trpc.timedTask.delete.useMutation({
+  const completeTask = trpc.timedTask.complete.useMutation({
     onSuccess: () => {
       utils.timedTask.getAll.invalidate();
       toast({
@@ -66,7 +67,7 @@ export function TimedTaskItem({ task }: TimedTaskItemProps) {
     deleteTask.mutate({ id: task.id });
   };
 
-  const isExpired = timeLeft === 0;
+  const isExpired = timeLeft <= 0;
 
   return (
     <div
@@ -75,16 +76,28 @@ export function TimedTaskItem({ task }: TimedTaskItemProps) {
       }`}
     >
       <div className="flex items-center justify-between mb-2 mr-2">
-        <span className={`font-semibold text-sm ${isExpired ? "text-red-500" : "text-gray-800"} truncate max-w-[200px]`}>
-          {task.title}
-        </span>
-        <span
-          className={`text-sm ${
-            isExpired ? "text-red-500" : "text-gray-500"
-          } whitespace-nowrap`}
-        >
-          {formatTime(timeLeft)}
-        </span>
+        {task.title ? (
+          <span
+            className={`font-semibold text-sm ${
+              isExpired ? "text-red-500" : "text-gray-800"
+            } truncate max-w-[200px]`}
+          >
+            {task.title}
+          </span>
+        ) : (
+          <Skeleton className="h-4 w-32" />
+        )}
+        {timeLeft !== undefined ? (
+          <span
+            className={`text-sm ${
+              isExpired ? "text-red-500" : "text-gray-500"
+            } whitespace-nowrap`}
+          >
+            {formatTime(timeLeft)}
+          </span>
+        ) : (
+          <Skeleton className="h-4 w-16" />
+        )}
       </div>
       <div className="flex justify-end space-x-2">
         <Button

@@ -18,6 +18,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { useToast } from "@/components/ui/use-toast";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useMemo } from "react";
 
 export default function BoardPage() {
   const router = useRouter();
@@ -40,6 +42,7 @@ export default function BoardPage() {
   const [cardToDelete, setCardToDelete] = useState<string | null>(null);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const { toast } = useToast();
+  const utils = trpc.useUtils();
 
   useEffect(() => {
     if (board) {
@@ -102,6 +105,7 @@ export default function BoardPage() {
       }
     }
   };
+
   const onDragEnd = async (result: DropResult) => {
     if (!result.destination) return;
     const { source, destination } = result;
@@ -111,34 +115,75 @@ export default function BoardPage() {
     )
       return;
 
-    const updatedBoard = JSON.parse(JSON.stringify(boardState));
-    const sourceColumn = updatedBoard.columns.find(
-      (col: ColumnType) => col.id === source.droppableId
-    );
-    const destColumn = updatedBoard.columns.find(
-      (col: ColumnType) => col.id === destination.droppableId
-    );
-    const [movedCard] = sourceColumn.cards.splice(source.index, 1);
-    destColumn.cards.splice(destination.index, 0, movedCard);
-
-    setBoardState(updatedBoard);
-
-    await updateCardOrderMutation.mutateAsync({
-      cardId: result.draggableId,
-      newColumnId: destination.droppableId,
-      newOrder: destination.index,
+    setBoardState((prevState) => {
+      if (!prevState) return null;
+      const updatedBoard = JSON.parse(JSON.stringify(prevState));
+      const sourceColumn = updatedBoard.columns.find(
+        (col: ColumnType) => col.id === source.droppableId
+      );
+      const destColumn = updatedBoard.columns.find(
+        (col: ColumnType) => col.id === destination.droppableId
+      );
+      const [movedCard] = sourceColumn.cards.splice(source.index, 1);
+      destColumn.cards.splice(destination.index, 0, movedCard);
+      return updatedBoard;
     });
 
-    refetch();
+    try {
+      await updateCardOrderMutation.mutateAsync({
+        cardId: result.draggableId,
+        newColumnId: destination.droppableId,
+        newOrder: destination.index,
+      });
+    } catch (error) {
+      console.error("Failed to update card order:", error);
+      toast({
+        title: "Error",
+        description: "Failed to update card order. Please try again.",
+        variant: "destructive",
+      });
+      refetch();
+    }
   };
 
-  if (isLoading) return <div>Loading...</div>;
-  if (!board) return <div>Board not found</div>;
+  const memoizedColumns = useMemo(() => {
+    return boardState?.columns.map((column: ColumnType) => (
+      <Column
+        key={column.id}
+        column={column}
+        onAddCard={() => {
+          setActiveColumn(column.id);
+          setIsDialogOpen(true);
+        }}
+        onDeleteCard={handleDeleteCard}
+        showAddCard={column.name.toLowerCase() === "to do"}
+        isLoading={isLoading}
+      />
+    ));
+  }, [boardState, isLoading]);
 
+  if (isLoading)
+    return (
+      <div className="container mx-auto p-4">
+        <Skeleton className="h-8 w-1/4 mb-8" />
+        <div className="flex space-x-4">
+          {[...Array(3)].map((_, index) => (
+            <Skeleton key={index} className="h-[70vh] w-[350px]" />
+          ))}
+        </div>
+      </div>
+    );
+  if (!board) {
+    return (
+      <div className="container mx-auto p-4">
+        Board not found or you don't have access to this board.
+      </div>
+    );
+  }
   return (
     <div className="container mx-auto p-4">
       <div className="flex items-center mb-8">
-        <Link href="/">
+        <Link href="/boards">
           <Button variant="ghost" size="icon" className="mr-4 rounded-full">
             <ArrowLeft className="h-6 w-6" />
           </Button>
@@ -147,18 +192,7 @@ export default function BoardPage() {
       </div>
       <DragDropContext onDragEnd={onDragEnd}>
         <div className="flex justify-center space-x-4 overflow-x-auto pb-4">
-          {board.columns.map((column: ColumnType) => (
-            <Column
-              key={column.id}
-              column={column}
-              onAddCard={() => {
-                setActiveColumn(column.id);
-                setIsDialogOpen(true);
-              }}
-              onDeleteCard={handleDeleteCard}
-              showAddCard={column.name.toLowerCase() === "to do"}
-            />
-          ))}
+          {memoizedColumns}
         </div>
       </DragDropContext>
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>

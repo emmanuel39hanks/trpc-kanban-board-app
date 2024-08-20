@@ -5,8 +5,11 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export const boardRouter = router({
-  getAll: protectedProcedure.query(() => {
-    return prisma.board.findMany();
+  getAll: protectedProcedure.query(async ({ ctx }) => {
+    return prisma.board.findMany({
+      where: { userId: ctx.user.id },
+      orderBy: { createdAt: "desc" },
+    });
   }),
   getById: protectedProcedure
     .input(z.object({ id: z.string() }))

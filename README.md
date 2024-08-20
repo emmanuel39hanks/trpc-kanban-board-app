@@ -126,9 +126,9 @@ This application uses Jamendo for the lofi music player. Follow these steps to s
 
 ## TODO
 
-- [ ] Fix bugs:
-  - [ ] Improve error handling for API calls
-  - [ ] Address any console warnings or errors
+- [x] Fix bugs:
+  - [x] Improve error handling for API calls
+  - [x] Address any console warnings or errors
 
 - [x] Add homepage:
   - [x] Create a landing page with app information
@@ -147,17 +147,17 @@ This application uses Jamendo for the lofi music player. Follow these steps to s
 - [x] Add confirmation modals:
   - [x] Implement confirmation dialogs for delete actions (boards, columns, cards)
 
-- [ ] Improve loading states:
-  - [ ] Add skeleton loaders for boards and cards
-  - [ ] Implement better loading indicators for API calls
+- [x] Improve loading states:
+  - [x] Add skeleton loaders for boards and cards
+  - [x] Implement better loading indicators for API calls
 
-- [ ] Enhance drag and drop functionality:
-  - [ ] Add visual feedback during drag operations
-  - [ ] Implement smooth animations for card movements
+- [x] Enhance drag and drop functionality:
+  - [x] Add visual feedback during drag operations
+  - [x] Implement smooth animations for card movements
 
-- [ ] Add AI voice task creation:
-  - [ ] Integrate OpenAI's Whisper for speech-to-text conversion
-  - [ ] Allow users to add tasks using voice commands
+- [x] Add AI voice task creation:
+  - [x] Integrate OpenAI's Whisper for speech-to-text conversion
+  - [x] Allow users to add tasks using voice commands
 
 - [x] Add background music feature:
   - [x] Integrate lofi music player

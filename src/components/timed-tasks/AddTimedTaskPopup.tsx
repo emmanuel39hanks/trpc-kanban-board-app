@@ -10,17 +10,23 @@ import {
   DialogTitle,
   DialogFooter,
 } from "@/components/ui/dialog";
+import { Mic } from "lucide-react";
+import { VoiceRecorder } from "./VoiceRecorder";
 
 interface AddTimedTaskPopupProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
 
-export function AddTimedTaskPopup({ open, onOpenChange }: AddTimedTaskPopupProps) {
+export function AddTimedTaskPopup({
+  open,
+  onOpenChange,
+}: AddTimedTaskPopupProps) {
   const [title, setTitle] = useState("");
   const [duration, setDuration] = useState("");
+  const [isRecording, setIsRecording] = useState(false);
   const { toast } = useToast();
-  const utils = trpc.useContext();
+  const utils = trpc.useUtils();
 
   const createTask = trpc.timedTask.create.useMutation({
     onSuccess: () => {
@@ -42,6 +48,13 @@ export function AddTimedTaskPopup({ open, onOpenChange }: AddTimedTaskPopupProps
     }
   };
 
+  const handleVoiceInput = (taskTitle: string, taskDuration: number) => {
+    setTitle(taskTitle);
+    setDuration(taskDuration.toString());
+    setIsRecording(false);
+    onOpenChange(false);
+  };
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
@@ -49,11 +62,21 @@ export function AddTimedTaskPopup({ open, onOpenChange }: AddTimedTaskPopupProps
           <DialogTitle>Add New Timed Task</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
-          <Input
-            placeholder="Task title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
+          <div className="flex items-center space-x-2">
+            <Input
+              placeholder="Task title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
+            <Button
+              type="button"
+              variant="outline"
+              size="icon"
+              onClick={() => setIsRecording(true)}
+            >
+              <Mic className="h-4 w-4" />
+            </Button>
+          </div>
           <Input
             type="number"
             placeholder="Duration (minutes)"
@@ -64,6 +87,15 @@ export function AddTimedTaskPopup({ open, onOpenChange }: AddTimedTaskPopupProps
             <Button type="submit">Add Task</Button>
           </DialogFooter>
         </form>
+        {isRecording && (
+          <VoiceRecorder
+            onRecordingComplete={(taskTitle, taskDuration) => {
+              handleVoiceInput(taskTitle, taskDuration);
+              setIsRecording(false);
+            }}
+            onClose={() => setIsRecording(false)}
+          />
+        )}
       </DialogContent>
     </Dialog>
   );

@@ -51,11 +51,13 @@ model Card {
 }
 
 model TimedTask {
-  id        String   @id @default(cuid())
-  title     String
-  duration  Int      // Duration in minutes
-  createdAt DateTime @default(now())
+  id          String    @id @default(cuid())
+  title       String
+  duration    Int
+  startedAt   DateTime?
   completedAt DateTime?
-  userId    String
-  user      User     @relation(fields: [userId], references: [id])
+  userId      String
+  user        User      @relation(fields: [userId], references: [id])
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 }

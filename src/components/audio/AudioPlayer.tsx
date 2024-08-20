@@ -8,9 +8,11 @@ import {
   SkipBack,
   Volume2,
   VolumeXIcon,
+  Shuffle,
 } from "lucide-react";
 import { Track } from "@/types";
 import { Progress } from "@/components/ui/progress";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export function AudioPlayer() {
   const [tracks, setTracks] = useState<Track[]>([]);
@@ -18,6 +20,7 @@ export function AudioPlayer() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
   const [isMuted, setIsMuted] = useState(false);
+  const [isShuffled, setIsShuffled] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
   const [isAudioLoading, setIsAudioLoading] = useState(false);
 
@@ -26,9 +29,10 @@ export function AudioPlayer() {
 
   useEffect(() => {
     if (lofiTracks) {
-      setTracks(lofiTracks);
-      if (lofiTracks.length > 0) {
-        setCurrentTrack(lofiTracks[0]);
+      const shuffledTracks = [...lofiTracks].sort(() => Math.random() - 0.5);
+      setTracks(shuffledTracks);
+      if (shuffledTracks.length > 0) {
+        setCurrentTrack(shuffledTracks[0]);
       }
     }
   }, [lofiTracks]);
@@ -44,29 +48,28 @@ export function AudioPlayer() {
     };
 
     audio.addEventListener("timeupdate", updateProgress);
-    return () => audio.removeEventListener("timeupdate", updateProgress);
+    audio.addEventListener("canplay", () => setIsAudioLoading(false));
+    audio.addEventListener("waiting", () => setIsAudioLoading(true));
+
+    return () => {
+      audio.removeEventListener("timeupdate", updateProgress);
+      audio.removeEventListener("canplay", () => setIsAudioLoading(false));
+      audio.removeEventListener("waiting", () => setIsAudioLoading(true));
+    };
   }, [currentTrack]);
 
   const togglePlay = () => {
     const audio = audioRef.current;
     if (!audio) return;
 
-    setIsAudioLoading(true);
     if (isPlaying) {
       audio.pause();
       setIsPlaying(false);
-      setIsAudioLoading(false);
     } else {
-      audio
-        .play()
-        .then(() => {
-          setIsPlaying(true);
-          setIsAudioLoading(false);
-        })
-        .catch((error) => {
-          console.error("Error playing audio:", error);
-          setIsAudioLoading(false);
-        });
+      audio.play().catch((error) => {
+        console.error("Error playing audio:", error);
+      });
+      setIsPlaying(true);
     }
   };
 
@@ -78,27 +81,66 @@ export function AudioPlayer() {
     setIsMuted(!isMuted);
   };
 
-  const nextTrack = () => {
-    if (currentTrack) {
-      const currentIndex = tracks.findIndex(
-        (track) => track.id === currentTrack.id
+  const getNextTrack = () => {
+    const currentIndex = tracks.findIndex(
+      (track) => track.id === currentTrack?.id
+    );
+    if (isShuffled) {
+      const remainingTracks = tracks.filter(
+        (_, index) => index !== currentIndex
       );
-      const nextIndex = (currentIndex + 1) % tracks.length;
-      setCurrentTrack(tracks[nextIndex]);
+      return remainingTracks[
+        Math.floor(Math.random() * remainingTracks.length)
+      ];
+    } else {
+      return tracks[(currentIndex + 1) % tracks.length];
     }
+  };
+
+  const getPreviousTrack = () => {
+    const currentIndex = tracks.findIndex(
+      (track) => track.id === currentTrack?.id
+    );
+    if (isShuffled) {
+      const remainingTracks = tracks.filter(
+        (_, index) => index !== currentIndex
+      );
+      return remainingTracks[
+        Math.floor(Math.random() * remainingTracks.length)
+      ];
+    } else {
+      return tracks[(currentIndex - 1 + tracks.length) % tracks.length];
+    }
+  };
+
+  const nextTrack = () => {
+    setCurrentTrack(getNextTrack());
   };
 
   const previousTrack = () => {
-    if (currentTrack) {
-      const currentIndex = tracks.findIndex(
-        (track) => track.id === currentTrack.id
-      );
-      const previousIndex = (currentIndex - 1 + tracks.length) % tracks.length;
-      setCurrentTrack(tracks[previousIndex]);
-    }
+    setCurrentTrack(getPreviousTrack());
   };
 
-  if (isLoading) return <div>Loading...</div>;
+  const toggleShuffle = () => {
+    setIsShuffled(!isShuffled);
+  };
+
+  useEffect(() => {
+    if (currentTrack) {
+      const audio = audioRef.current;
+      if (audio) {
+        audio.src = currentTrack.audio;
+        audio.load();
+        if (isPlaying) {
+          audio.play().catch((error) => {
+            console.error("Error playing audio:", error);
+          });
+        }
+      }
+    }
+  }, [currentTrack]);
+
+  if (isLoading) return <Skeleton className="h-16 w-full" />;
 
   return (
     <div className="flex items-center space-x-2 bg-white p-1 rounded-lg shadow-sm outline outline-1 outline-gray-200 mr-2 w-100">
@@ -160,6 +202,9 @@ export function AudioPlayer() {
             <Volume2 className="h-4 w-4" />
           )}
         </Button>
+        <Button variant="ghost" size="icon" onClick={toggleShuffle}>
+          <Shuffle className={`h-4 w-4 ${isShuffled ? "text-blue-500" : ""}`} />
+        </Button>
       </div>
       {currentTrack && (
         <audio
@@ -167,8 +212,6 @@ export function AudioPlayer() {
           src={currentTrack.audio}
           onEnded={nextTrack}
           muted={isMuted}
-          onLoadStart={() => setIsAudioLoading(true)}
-          onCanPlay={() => setIsAudioLoading(false)}
         />
       )}
     </div>
