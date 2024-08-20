@@ -81,6 +81,23 @@ This application uses Jamendo for the lofi music player. Follow these steps to s
 
 5. The application is now set up to use Jamendo's API for fetching lofi tracks.
 
+
+## OpenAI Integration
+
+This application uses OpenAI's Whisper for speech-to-text conversion. Follow these steps to set up OpenAI:
+
+
+1. Add the following environment variable to your `.env` file:
+
+   ```
+   OPENAI_API_KEY='your_openai_api_key_here'
+   ```
+
+   Replace `your_openai_api_key_here` with the API key you just generated.
+
+
+Note: Be careful not to expose your OpenAI API key publicly. Always keep it secure and never commit it to version control systems.
+
 ## Getting Started
 
 1. Clone the repository:
