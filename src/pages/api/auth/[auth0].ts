@@ -3,6 +3,7 @@ import {
   handleCallback,
   Session,
   AfterCallback,
+  handleLogin,
 } from "@auth0/nextjs-auth0";
 import { NextApiRequest, NextApiResponse } from "next";
 import { createTRPCContext } from "../../../server/context";
@@ -31,6 +32,11 @@ const afterCallback: AfterCallback = async (
 };
 
 export default handleAuth({
+  async login(req: NextApiRequest, res: NextApiResponse) {
+    await handleLogin(req, res, {
+      returnTo: "/boards",
+    });
+  },
   async callback(req: NextApiRequest, res: NextApiResponse) {
     try {
       await handleCallback(req, res, { afterCallback });
