@@ -135,14 +135,6 @@ export function VoiceRecorder({
     <Dialog open={true} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[425px]">
         <div className="flex flex-col items-center justify-center space-y-4">
-          <Button
-            onClick={onClose}
-            variant="ghost"
-            className="absolute right-4 top-4"
-            disabled={isProcessing}
-          >
-            <X className="h-4 w-4" />
-          </Button>
           <div className="text-center">
             <h2 className="text-lg font-semibold">Voice Recorder</h2>
             <p className="text-sm text-gray-500">
