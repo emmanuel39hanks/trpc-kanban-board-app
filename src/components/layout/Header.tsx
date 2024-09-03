@@ -45,7 +45,9 @@ export default function Header() {
   return (
     <header className="flex justify-between items-center py-4 px-6 bg-white shadow-sm">
       <div className="flex items-center">
-        <Image src={logo} alt="LemoBoards Logo" width={200} height={40} />
+        <Link href="/">
+          <Image src={logo} alt="LemoBoards Logo" width={200} height={40} />
+        </Link>
       </div>
       <nav className="flex items-center">
         {user && <AudioPlayer />}
